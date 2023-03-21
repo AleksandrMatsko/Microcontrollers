@@ -1,0 +1,33 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega168"</DEVICE>
+ <WORKING_DIR>C:\Users\AMats\Documents\Atmel Studio\7.0\FindNumInArray\FindNumInArray\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc</DIR>
+  <DIR>D:\programming\Microchip Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FindNumInArray\FindNumInArray\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FindNumInArray\FindNumInArray\Debug\FindNumInArray.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>FindNumInArray.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>FindNumInArray.map</FILE>
+  <FILE>FindNumInArray.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <_array><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FindNumInArray\FindNumInArray\main.asm</FILE><LINE>21</LINE></_array>
+  <start><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FindNumInArray\FindNumInArray\main.asm</FILE><LINE>28</LINE></start>
+  <fill_array><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FindNumInArray\FindNumInArray\main.asm</FILE><LINE>33</LINE></fill_array>
+  <prepare_search><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FindNumInArray\FindNumInArray\main.asm</FILE><LINE>40</LINE></prepare_search>
+  <search><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FindNumInArray\FindNumInArray\main.asm</FILE><LINE>47</LINE></search>
+  <search_end><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FindNumInArray\FindNumInArray\main.asm</FILE><LINE>59</LINE></search_end>
+  <found><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FindNumInArray\FindNumInArray\main.asm</FILE><LINE>56</LINE></found>
+ </LABELS>
+</ASSEMBLER_INFO>
