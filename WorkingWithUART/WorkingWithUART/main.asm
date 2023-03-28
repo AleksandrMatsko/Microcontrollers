@@ -105,7 +105,7 @@ start:
 	ldi		r31, high(UCSR0A)
 	st		Z, r16	; clear all flags
 
-	ldi		r16, (0 << UMSEL01) | (0 << UMSEL00) | (1 << UPM01) | (0 << UPM00) | (0 << USBS0) | (1 << UCSZ01) | (1 << UCSZ00) ; choose async mode, even parity, one stop bit, 8-bit of data
+	ldi		r16, (0 << UMSEL01) | (0 << UMSEL00) | (0 << UPM01) | (0 << UPM00) | (0 << USBS0) | (1 << UCSZ01) | (1 << UCSZ00) ; choose async mode, disable parity, one stop bit, 8-bit of data
 	ldi		r30, low(UCSR0C)
 	ldi		r31, high(UCSR0C)
 	st		Z, r16  ; set configuration
