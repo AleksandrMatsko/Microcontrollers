@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\AMats\Documents\Atmel Studio\7.0\WorkWithADC\WorkWithADC\main.asm Tue Apr 04 13:53:10 2023
+AVRASM ver. 2.2.8  C:\Users\AMats\Documents\Atmel Studio\7.0\FlashingDiode\FlashingDiode\main.asm Tue Apr 11 16:03:37 2023
 
 
 EQU  SIGNATURE_000 0000001e
@@ -690,9 +690,12 @@ EQU  ACIaddr      0000002e
 EQU  TWIaddr      00000030
 EQU  SPMRaddr     00000032
 EQU  INT_VECTORS_SIZE 00000034
-EQU  STOP_VAL     00000002
-DSEG to_trans     00000100
-DSEG counter      00000102
-CSEG start        0000003b
-CSEG ADC_complete 0000002b
-CSEG loop         00000052
+EQU  INTR         ffffffff
+EQU  HIGH_LEVEL_FREQ 0000007f
+EQU  HIGH_STOP    0000007a
+EQU  LOW_STOP     00000012
+CSEG start        00000037
+CSEG TC0_overflow_handler 00000021
+CSEG stop         0000002e
+CSEG TC0_cmp_handler 00000031
+CSEG cycle        0000004d

@@ -1,10 +1,10 @@
 
-AVRASM ver. 2.2.8  C:\Users\AMats\Documents\Atmel Studio\7.0\WorkWithADC\WorkWithADC\main.asm Tue Apr 04 13:53:10 2023
+AVRASM ver. 2.2.8  C:\Users\AMats\Documents\Atmel Studio\7.0\StartModBus\StartModBus\main.asm Mon Apr 10 20:42:11 2023
 
 [builtin](2): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
-C:\Users\AMats\Documents\Atmel Studio\7.0\WorkWithADC\WorkWithADC\main.asm(8): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
+C:\Users\AMats\Documents\Atmel Studio\7.0\StartModBus\StartModBus\main.asm(9): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
 [builtin](2): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
-C:\Users\AMats\Documents\Atmel Studio\7.0\WorkWithADC\WorkWithADC\main.asm(8): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
+C:\Users\AMats\Documents\Atmel Studio\7.0\StartModBus\StartModBus\main.asm(9): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
                                  
                                  ;
                                  
@@ -982,11 +982,12 @@ C:\Users\AMats\Documents\Atmel Studio\7.0\WorkWithADC\WorkWithADC\main.asm(8): I
                                  
                                  ; ***** END OF FILE ******************************************************
                                  
-                                 ; WorkWithADC.asm
+                                 ; StartModBus.asm
                                  ;
-                                 ; Created: 28.03.2023 14:36:43
+                                 ; Created: 04.04.2023 14:29:35
                                  ; Author : AMats
                                  ;
+                                 
                                  
                                  .include "m168def.inc"
                                  
@@ -1035,71 +1036,195 @@ C:\Users\AMats\Documents\Atmel Studio\7.0\WorkWithADC\WorkWithADC\main.asm(8): I
                                  	
                                  .equ	STOP_VAL = 2
                                  
+                                 .equ	ARRAY_SIZE = 10
+                                 .equ	BORDER = 9
+                                 .equ	MAX_PACKET_SIZE = 1
+                                 
                                  .DSEG
                                  
-000100                           to_trans:	.BYTE	2
-000102                           counter:	.BYTE	1
+000100                           packet:			.BYTE	MAX_PACKET_SIZE
+000101                           rcv_counter:	.BYTE	1
+000102                           snd_counter:	.BYTE	1
+000103                           array:			.BYTE	ARRAY_SIZE
+                                 
                                  
                                  .CSEG
                                  
-000000 940c 003b                 .org 0x0000		jmp start
-00002a c000                      .org 0x002A		rjmp ADC_complete
+000000 940c 0086                 .org 0x0000		jmp start
+000024 940c 002a                 .org 0x0024		jmp RCV_complete_interrupt
+000026 940c 0053                 .org 0x0026		jmp Data_empty_interrupt
+000028 940c 0069                 .org 0x0028		jmp TRNS_complete_interrupt
                                  
-                                 ADC_complete:
-00002b b70f                      	in		r16, SREG
-00002c 930f                      	push	r16
+                                 RCV_complete_interrupt:
+00002a b70f                      	in		r16, SREG
+00002b 930f                      	push	r16
                                  
-00002d e7e8                      	ldi		r30, low(ADCL)
-00002e e0f0                      	ldi		r31, high(ADCL)
-00002f 8120                      	ld		r18, Z	; get low 8 bits
-000030 e7e9                      	ldi		r30, low(ADCH)
-000031 e0f0                      	ldi		r31, high(ADCH)
-000032 8130                      	ld		r19, Z	; get high 2 bits
+00002c ece6                      	ldi		r30, low(UDR0)
+00002d e0f0                      	ldi		r31, high(UDR0)
+00002e 8100                      	ld		r16, Z	; get data in r16
                                  
-000033 e7ea                      	ldi		r30, low(ADCSRA)
-000034 e0f0                      	ldi		r31, high(ADCSRA)
-000035 8110                      	ld		r17, Z
-000036 6410                      	ori		r17, (1 << ADSC)
-000037 8310                      	st		Z, r17 ; start conversion
+00002f e0e1                      	ldi		r30, low(rcv_counter)
+000030 e0f1                      	ldi		r31, high(rcv_counter)
+000031 8110                      	ld		r17, Z
+000032 9513                      	inc		r17		; rcv_counter += 1
                                  
-000038 910f                      	pop		r16
-000039 bf0f                      	out		SREG, r16
-00003a 9518                      	reti
+000033 3011                      	cpi		r17, 1
+000034 f059                      	breq	first_byte
+                                 
+                                 	; if not first byte
+                                 
+000035 e0e0                      	ldi		r30, low(packet)
+000036 e0f1                      	ldi		r31, high(packet)
+000037 8120                      	ld		r18, Z		; get index
+                                 	
+000038 e030                      	ldi		r19, 0
+000039 e0c3                      	ldi		r28, low(array)
+00003a e0d1                      	ldi		r29, high(array)
+00003b 0fc2                      	add		r28, r18
+00003c 1fd3                      	adc		r29, r19
+00003d 8308                      	st		Y, r16		; modified value by index
+                                 	
+00003e 940c 0048                 	jmp		turn_on_sender
+                                 
+                                 
+                                 
+                                 first_byte:
+000040 300a                      	cpi		r16, ARRAY_SIZE	
+000041 f520                      	brsh	stop		; if num >= ARRAY_SIZE (index out of range) ignore
+                                 
+000042 8310                      	st		Z, r17		; save rcv_counter
+                                 
+000043 e0e0                      	ldi		r30, low(packet)
+000044 e0f1                      	ldi		r31, high(packet)
+000045 8300                      	st		Z, r16		; save index of element
+                                 
+000046 3009                      	cpi		r16, BORDER
+000047 f4f0                      	brsh	stop		; if lower then BORDER we should send the value by index, if higher or equal receive val and set it by index
+                                 
+                                 turn_on_sender:
+000048 e010                      	ldi		r17, 0
+                                 	;ldi		r30, low(snd_counter)
+                                 	;ldi		r31, high(snd_counter)
+                                 	;st		Z, r17		; snd_counter = 0
+                                 
+000049 e0e1                      	ldi		r30, low(rcv_counter)
+00004a e0f1                      	ldi		r31, high(rcv_counter)
+00004b 8310                      	st		Z, r17		; rcv_counter = 0
+                                 
+00004c 94f8                      	cli
+                                 
+00004d e218                      	ldi		r17, (1 << TXEN0) | (1 << UDRIE0) ; enable transmiter, data empty interrupt turn off receiver and receiver interrupt
+00004e ece1                      	ldi		r30, low(UCSR0B)
+00004f e0f0                      	ldi		r31, high(UCSR0B)
+000050 8310                      	st		Z, r17
+                                 
+000051 940c 0066                 	jmp		stop
+                                 
+                                 
+                                 Data_empty_interrupt:
+000053 b70f                      	in		r16, SREG
+000054 930f                      	push	r16
+                                 
+000055 e0e0                      	ldi		r30, low(packet)
+000056 e0f1                      	ldi		r31, high(packet)
+000057 8110                      	ld		r17, Z		; get index
+000058 e020                      	ldi		r18, 0
+                                 
+000059 e0c3                      	ldi		r28, low(array)
+00005a e0d1                      	ldi		r29, high(array)
+00005b 0fc1                      	add		r28, r17
+00005c 1fd2                      	adc		r29, r18
+00005d 8128                      	ld		r18, Y		; get val from memory on position [index]
+                                 
+00005e ecc6                      	ldi		r28, low(UDR0)
+00005f e0d0                      	ldi		r29, high(UDR0)
+000060 8328                      	st		Y, r18		; put the val into data register to send
+                                 
+000061 94f8                      	cli
+                                 
+000062 e418                      	ldi		r17, (1 << TXEN0) | (1 << TXCIE0); enable transmiter, transmitter interrupt and turned off data_empty_interrupt
+000063 ece1                      	ldi		r30, low(UCSR0B)
+000064 e0f0                      	ldi		r31, high(UCSR0B)
+000065 8310                      	st		Z, r17
+                                 
+                                 stop:
+000066 910f                      	pop		r16
+000067 bf0f                      	out		SREG, r16
+000068 9518                      	reti
+                                 
+                                 TRNS_complete_interrupt:
+000069 b70f                      	in		r16, SREG
+00006a 930f                      	push	r16
+                                 
+00006b e900                      	ldi		r16, (1 << RXEN0) | (1 << RXCIE0) ; enable receiver and receive interrupt
+00006c ece1                      	ldi		r30, low(UCSR0B)
+00006d e0f0                      	ldi		r31, high(UCSR0B)
+00006e 8300                      	st		Z, r16
+                                 
+00006f cff6                      	rjmp	stop
+                                 
+                                 
+                                 fill_array:
+000070 90f0 003f                 	lds		r15, SREG
+000072 92ff                      	push	r15
+000073 930f                      	push	r16
+000074 93ef                      	push	r30
+000075 93ff                      	push	r31
+000076 e000                      	ldi		r16, 0		; counter
+000077 e0e3                      	ldi		r30, low(array)
+000078 e0f1                      	ldi		r31, high(array)
+                                 	
+                                 fill_element:
+000079 300a                      	cpi		r16, ARRAY_SIZE
+00007a f021                      	breq	end_of_fill
+00007b 9503                      	inc		r16
+00007c 9301                      	st		Z+, r16
+00007d 940c 0079                 	jmp		fill_element
+                                 
+                                 end_of_fill:
+00007f 91ff                      	pop		r31
+000080 91ef                      	pop		r30
+000081 910f                      	pop		r16
+000082 90ff                      	pop		r15
+000083 92f0 003f                 	sts		SREG, r15
+000085 9508                      	ret
                                  
                                  
                                  start:
-00003b 94f8                          cli		
-00003c ef0f                      	ldi		r16, low(RAMEND)
-00003d bf0d                      	out		SPL, r16
-00003e e004                      	ldi		r16, high(RAMEND)
-00003f bf0e                      	out		SPH, r16
+000086 94f8                          cli		
+000087 ef0f                      	ldi		r16, low(RAMEND)
+000088 bf0d                      	out		SPL, r16
+000089 e004                      	ldi		r16, high(RAMEND)
+00008a bf0e                      	out		SPH, r16
                                  
-000040 e000                      	ldi		r16, 0	; using AREF, ADLAR = 0, ADC0
-000041 e7ec                      	ldi		r30, low(ADMUX)
-000042 e0f0                      	ldi		r31, high(ADMUX)
-000043 8300                      	st		Z, r16
+00008b e000                      	ldi		r16, 0
+00008c ece0                      	ldi		r30, low(UCSR0A)
+00008d e0f0                      	ldi		r31, high(UCSR0A)
+00008e 8300                      	st		Z, r16	; clear all flags
                                  
-000044 e808                      	ldi		r16, (1 << ADEN) | (1 << ADIE) ; enable ADC, enable ADC interrupt
-000045 e7ea                      	ldi		r30, low(ADCSRA)
-000046 e0f0                      	ldi		r31, high(ADCSRA)
-000047 8300                      	st		Z, r16
+00008f e006                      	ldi		r16, (0 << UMSEL01) | (0 << UMSEL00) | (0 << UPM01) | (0 << UPM00) | (0 << USBS0) | (1 << UCSZ01) | (1 << UCSZ00) ; choose async mode, disable parity, one stop bit, 8-bit of data
+000090 ece2                      	ldi		r30, low(UCSR0C)
+000091 e0f0                      	ldi		r31, high(UCSR0C)
+000092 8300                      	st		Z, r16  ; set configuration
                                  
-000048 e001                      	ldi		r16, (1 << ADC0D) ; digital input disable for ADC0
-000049 e7ee                      	ldi		r30, low(DIDR0)
-00004a e0f0                      	ldi		r31, high(DIDR0)
-00004b 8300                      	st		Z, r16 ; 
+000093 e607                      	ldi		r16, 103
+000094 ece4                      	ldi		r30, low(UBRR0L)
+000095 e0f0                      	ldi		r31, high(UBRR0L)
+000096 8300                      	st		Z, r16
                                  
-00004c 9478                      	sei
+000097 e900                      	ldi		r16, (1 << RXEN0) | (1 << RXCIE0)  ; enable receiver and receive interrupt
+000098 ece1                      	ldi		r30, low(UCSR0B)
+000099 e0f0                      	ldi		r31, high(UCSR0B)
+00009a 8300                      	st		Z, r16
                                  
-00004d e7ea                      	ldi		r30, low(ADCSRA)
-00004e e0f0                      	ldi		r31, high(ADCSRA)
-00004f 8110                      	ld		r17, Z
-000050 6410                      	ori		r17, (1 << ADSC)
-000051 8310                      	st		Z, r17 ; start conversion
+00009b 9478                      	sei
+                                 
+00009c 940e 0070                 	call	fill_array
+                                 
                                  
                                  loop:
-000052 0000                      	nop
-000053 cffe                      	rjmp	loop
+00009e 0000                      	nop
+00009f cffe                      	rjmp	loop
 
 
 RESOURCE USE INFORMATION
@@ -1117,40 +1242,40 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega168" register use summary:
-x  :   0 y  :   0 z  :   9 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
+x  :   0 y  :   3 z  :  15 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  14 r17:   6 r18:   1 r19:   1 r20:   0 
-r21:   0 r22:   0 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
-r29:   0 r30:   7 r31:   7 
-Registers used: 7 out of 35 (20.0%)
+r13:   0 r14:   0 r15:   4 r16:  33 r17:  12 r18:   6 r19:   2 r20:   0 
+r21:   0 r22:   0 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   5 
+r29:   5 r30:  16 r31:  16 
+Registers used: 11 out of 35 (31.4%)
 
 "ATmega168" instruction use summary:
-.lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   0 
+.lds  :   0 .sts  :   0 adc   :   2 add   :   2 adiw  :   0 and   :   0 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   0 brcs  :   0 break :   0 breq  :   0 brge  :   0 brhc  :   0 
+brcc  :   0 brcs  :   0 break :   0 breq  :   2 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
-brne  :   0 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   0 cbr   :   0 
-clc   :   0 clh   :   0 cli   :   1 cln   :   0 clr   :   0 cls   :   0 
+brne  :   0 brpl  :   0 brsh  :   2 brtc  :   0 brts  :   0 brvc  :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :   1 cbi   :   0 cbr   :   0 
+clc   :   0 clh   :   0 cli   :   3 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
-cpi   :   0 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   1 inc   :   0 jmp   :   1 
-ld    :   4 ldd   :   0 ldi   :  19 lds   :   0 lpm   :   0 lsl   :   0 
+cpi   :   4 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   3 inc   :   2 jmp   :   7 
+ld    :   5 ldd   :   0 ldi   :  47 lds   :   1 lpm   :   0 lsl   :   0 
 lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   1 or    :   0 ori   :   2 out   :   3 pop   :   1 
-push  :   1 rcall :   0 ret   :   0 reti  :   1 rjmp  :   2 rol   :   0 
+neg   :   0 nop   :   1 or    :   0 ori   :   0 out   :   3 pop   :   5 
+push  :   7 rcall :   0 ret   :   1 reti  :   1 rjmp  :   2 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 
 sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
-sez   :   0 sleep :   0 spm   :   0 st    :   5 std   :   0 sts   :   0 
+sez   :   0 sleep :   0 spm   :   0 st    :  13 std   :   0 sts   :   1 
 sub   :   0 subi  :   0 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 14 out of 113 (12.4%)
+Instructions used: 23 out of 113 (20.4%)
 
 "ATmega168" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0000a8     88      0     88   16384   0.5%
-[.dseg] 0x000100 0x000103      0      3      3    1024   0.3%
+[.cseg] 0x000000 0x000140    252      0    252   16384   1.5%
+[.dseg] 0x000100 0x00010d      0     13     13    1024   1.3%
 [.eseg] 0x000000 0x000000      0      0      0     512   0.0%
 
 Assembly complete, 0 errors, 0 warnings

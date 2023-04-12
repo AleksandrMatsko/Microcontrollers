@@ -1,10 +1,10 @@
 
-AVRASM ver. 2.2.8  C:\Users\AMats\Documents\Atmel Studio\7.0\WorkWithADC\WorkWithADC\main.asm Tue Apr 04 13:53:10 2023
+AVRASM ver. 2.2.8  C:\Users\AMats\Documents\Atmel Studio\7.0\FlashingDiode\FlashingDiode\main.asm Tue Apr 11 16:03:37 2023
 
 [builtin](2): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
-C:\Users\AMats\Documents\Atmel Studio\7.0\WorkWithADC\WorkWithADC\main.asm(8): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
+C:\Users\AMats\Documents\Atmel Studio\7.0\FlashingDiode\FlashingDiode\main.asm(10): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
 [builtin](2): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
-C:\Users\AMats\Documents\Atmel Studio\7.0\WorkWithADC\WorkWithADC\main.asm(8): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
+C:\Users\AMats\Documents\Atmel Studio\7.0\FlashingDiode\FlashingDiode\main.asm(10): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
                                  
                                  ;
                                  
@@ -982,12 +982,14 @@ C:\Users\AMats\Documents\Atmel Studio\7.0\WorkWithADC\WorkWithADC\main.asm(8): I
                                  
                                  ; ***** END OF FILE ******************************************************
                                  
-                                 ; WorkWithADC.asm
+                                 ; FlashingDiode.asm
                                  ;
-                                 ; Created: 28.03.2023 14:36:43
+                                 ; Created: 11.04.2023 14:43:11
                                  ; Author : AMats
                                  ;
                                  
+                                 
+                                 ; Replace with your application code
                                  .include "m168def.inc"
                                  
                                  ;***** Created: 2011-02-09 12:03 ******* Source: ATmega168.xml ***********
@@ -1033,73 +1035,96 @@ C:\Users\AMats\Documents\Atmel Studio\7.0\WorkWithADC\WorkWithADC\main.asm(8): I
                                  
                                  ; ***** END OF FILE ******************************************************
                                  	
-                                 .equ	STOP_VAL = 2
+                                 .equ	INTR = -1
+                                 .equ	HIGH_LEVEL_FREQ = 127
+                                 
+                                 .equ	HIGH_STOP = 0b01111010
+                                 .equ	LOW_STOP = 0b00010010	; encoded 31250
                                  
                                  .DSEG
                                  
-000100                           to_trans:	.BYTE	2
-000102                           counter:	.BYTE	1
-                                 
                                  .CSEG
                                  
-000000 940c 003b                 .org 0x0000		jmp start
-00002a c000                      .org 0x002A		rjmp ADC_complete
+000000 c036                      .org 0x0000		rjmp start
+                                 ;.org 0x001E		rjmp TC0_cmp_handler
+000020 c000                      .org 0x0020		rjmp TC0_overflow_handler
                                  
-                                 ADC_complete:
-00002b b70f                      	in		r16, SREG
-00002c 930f                      	push	r16
                                  
-00002d e7e8                      	ldi		r30, low(ADCL)
-00002e e0f0                      	ldi		r31, high(ADCL)
-00002f 8120                      	ld		r18, Z	; get low 8 bits
-000030 e7e9                      	ldi		r30, low(ADCH)
-000031 e0f0                      	ldi		r31, high(ADCH)
-000032 8130                      	ld		r19, Z	; get high 2 bits
+                                 TC0_overflow_handler:
+000021 b70f                      	in		r16, SREG
+000022 930f                      	push	r16
+                                 	
+000023 0f62                      	add		r22, r18
+000024 1f71                      	adc		r23, r17
                                  
-000033 e7ea                      	ldi		r30, low(ADCSRA)
-000034 e0f0                      	ldi		r31, high(ADCSRA)
-000035 8110                      	ld		r17, Z
-000036 6410                      	ori		r17, (1 << ADSC)
-000037 8310                      	st		Z, r17 ; start conversion
+000025 377a                      	cpi		r23, HIGH_STOP
+000026 f439                      	brne	stop
                                  
-000038 910f                      	pop		r16
-000039 bf0f                      	out		SREG, r16
-00003a 9518                      	reti
+000027 3162                      	cpi		r22, LOW_STOP
+000028 f429                      	brne	stop
                                  
+000029 b109                      	in		r16, PIND
+00002a 2703                      	eor		r16, r19	; xor (1 << DD5)
+00002b b909                      	out		PIND, r16
+                                 
+00002c e060                      	ldi		r22, 0
+00002d e070                      	ldi		r23, 0
+                                 
+                                 stop:	
+00002e 910f                      	pop		r16
+00002f bf0f                      	out		SREG, r16
+000030 9518                      	reti
+                                 
+                                 TC0_cmp_handler:
+000031 b70f                      	in		r16, SREG
+000032 930f                      	push	r16
+                                 	
+000033 9543                      	inc		r20
+                                 	
+000034 910f                      	pop		r16
+000035 bf0f                      	out		SREG, r16
+000036 9518                      	reti
                                  
                                  start:
-00003b 94f8                          cli		
-00003c ef0f                      	ldi		r16, low(RAMEND)
-00003d bf0d                      	out		SPL, r16
-00003e e004                      	ldi		r16, high(RAMEND)
-00003f bf0e                      	out		SPH, r16
+000037 94f8                      	cli
+000038 ef0f                      	ldi		r16, low(RAMEND)
+000039 bf0d                      	out		SPL, r16
+00003a e004                      	ldi		r16, high(RAMEND)
+00003b bf0e                      	out		SPH, r16
                                  
-000040 e000                      	ldi		r16, 0	; using AREF, ADLAR = 0, ADC0
-000041 e7ec                      	ldi		r30, low(ADMUX)
-000042 e0f0                      	ldi		r31, high(ADMUX)
-000043 8300                      	st		Z, r16
+                                 ; turn on output
+00003c e200                      	ldi		r16, (1 << DDD5)
+00003d b90a                      	out		DDRD, r16
+00003e e230                      	ldi		r19, (1 << PIND5)
+00003f b939                      	out		PIND, r19
+000040 e200                      	ldi		r16, (1 << PORTD5)
+000041 b90b                      	out		PORTD, r16
                                  
-000044 e808                      	ldi		r16, (1 << ADEN) | (1 << ADIE) ; enable ADC, enable ADC interrupt
-000045 e7ea                      	ldi		r30, low(ADCSRA)
-000046 e0f0                      	ldi		r31, high(ADCSRA)
-000047 8300                      	st		Z, r16
+                                 ; setting value to compare
+                                 ;	ldi		r16, HIGH_LEVEL_FREQ
+                                 ;	sts		0x48, r16 ; OCR0B
                                  
-000048 e001                      	ldi		r16, (1 << ADC0D) ; digital input disable for ADC0
-000049 e7ee                      	ldi		r30, low(DIDR0)
-00004a e0f0                      	ldi		r31, high(DIDR0)
-00004b 8300                      	st		Z, r16 ; 
+                                 ; prepare for timer/counter interrupts
+                                 ; normal mode
+000042 e001                      	ldi		r16, (0 << WGM02) | (1 << CS00)
+000043 bd05                      	out		TCCR0B, r16
+000044 e000                      	ldi		r16, (0 << COM0B1) | (0 << COM0B0) | (0 << WGM01) | (0 << WGM00)
+000045 bd04                      	out		TCCR0A, r16
                                  
-00004c 9478                      	sei
+000046 e001                      	ldi		r16, (1 << TOIE0) ; | (1 << OCIE0B)
+000047 e6ee                      	ldi		r30, low(TIMSK0)
+000048 e0f0                      	ldi		r31, high(TIMSK0)
+000049 8300                      	st		Z, r16
                                  
-00004d e7ea                      	ldi		r30, low(ADCSRA)
-00004e e0f0                      	ldi		r31, high(ADCSRA)
-00004f 8110                      	ld		r17, Z
-000050 6410                      	ori		r17, (1 << ADSC)
-000051 8310                      	st		Z, r17 ; start conversion
+00004a 9478                      	sei
                                  
-                                 loop:
-000052 0000                      	nop
-000053 cffe                      	rjmp	loop
+00004b e021                      	ldi		r18, 1
+00004c e010                      	ldi		r17, 0
+                                 
+                                 
+                                 cycle:
+00004d 0000                      	nop
+00004e 940c 004d                 	jmp		cycle
 
 
 RESOURCE USE INFORMATION
@@ -1117,40 +1142,40 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega168" register use summary:
-x  :   0 y  :   0 z  :   9 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
+x  :   0 y  :   0 z  :   1 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  14 r17:   6 r18:   1 r19:   1 r20:   0 
-r21:   0 r22:   0 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
-r29:   0 r30:   7 r31:   7 
-Registers used: 7 out of 35 (20.0%)
+r13:   0 r14:   0 r15:   0 r16:  25 r17:   2 r18:   2 r19:   3 r20:   1 
+r21:   0 r22:   3 r23:   3 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
+r29:   0 r30:   1 r31:   1 
+Registers used: 10 out of 35 (28.6%)
 
 "ATmega168" instruction use summary:
-.lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   0 
+.lds  :   0 .sts  :   0 adc   :   1 add   :   1 adiw  :   0 and   :   0 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
 brcc  :   0 brcs  :   0 break :   0 breq  :   0 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
-brne  :   0 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
+brne  :   2 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
 brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   0 cbr   :   0 
 clc   :   0 clh   :   0 cli   :   1 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
-cpi   :   0 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   1 inc   :   0 jmp   :   1 
-ld    :   4 ldd   :   0 ldi   :  19 lds   :   0 lpm   :   0 lsl   :   0 
+cpi   :   2 cpse  :   0 dec   :   0 eor   :   1 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   3 inc   :   1 jmp   :   1 
+ld    :   0 ldd   :   0 ldi   :  14 lds   :   0 lpm   :   0 lsl   :   0 
 lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   1 or    :   0 ori   :   2 out   :   3 pop   :   1 
-push  :   1 rcall :   0 ret   :   0 reti  :   1 rjmp  :   2 rol   :   0 
+neg   :   0 nop   :   1 or    :   0 ori   :   0 out   :  10 pop   :   2 
+push  :   2 rcall :   0 ret   :   0 reti  :   2 rjmp  :   2 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 
 sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
-sez   :   0 sleep :   0 spm   :   0 st    :   5 std   :   0 sts   :   0 
+sez   :   0 sleep :   0 spm   :   0 st    :   1 std   :   0 sts   :   0 
 sub   :   0 subi  :   0 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 14 out of 113 (12.4%)
+Instructions used: 18 out of 113 (15.9%)
 
 "ATmega168" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0000a8     88      0     88   16384   0.5%
-[.dseg] 0x000100 0x000103      0      3      3    1024   0.3%
+[.cseg] 0x000000 0x0000a0     98      0     98   16384   0.6%
+[.dseg] 0x000100 0x000100      0      0      0    1024   0.0%
 [.eseg] 0x000000 0x000000      0      0      0     512   0.0%
 
 Assembly complete, 0 errors, 0 warnings
