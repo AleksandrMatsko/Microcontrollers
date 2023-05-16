@@ -1,0 +1,56 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega168"</DEVICE>
+ <WORKING_DIR>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc</DIR>
+  <DIR>D:\programming\Microchip Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\Debug\MatrixKeyboard.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>MatrixKeyboard.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>MatrixKeyboard.map</FILE>
+  <FILE>MatrixKeyboard.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <to_send><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>41</LINE></to_send>
+  <start><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>288</LINE></start>
+  <PCINT2_handler><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>54</LINE></PCINT2_handler>
+  <TC2_overflow_handler><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>79</LINE></TC2_overflow_handler>
+  <TC0_overflow_handler><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>97</LINE></TC0_overflow_handler>
+  <Data_empty_interrupt><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>248</LINE></Data_empty_interrupt>
+  <TRNS_complete_interrupt><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>270</LINE></TRNS_complete_interrupt>
+  <stop><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>242</LINE></stop>
+  <return_to_PC0><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>91</LINE></return_to_PC0>
+  <restore_pin_change><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>235</LINE></restore_pin_change>
+  <analyse><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>114</LINE></analyse>
+  <restore_TCNT2><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>224</LINE></restore_TCNT2>
+  <first_line><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>131</LINE></first_line>
+  <second_line><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>140</LINE></second_line>
+  <third_line><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>149</LINE></third_line>
+  <fourth_line><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>158</LINE></fourth_line>
+  <one><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>167</LINE></one>
+  <two><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>171</LINE></two>
+  <three><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>175</LINE></three>
+  <four><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>179</LINE></four>
+  <five><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>183</LINE></five>
+  <six><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>187</LINE></six>
+  <seven><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>191</LINE></seven>
+  <eight><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>195</LINE></eight>
+  <nine><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>199</LINE></nine>
+  <star><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>203</LINE></star>
+  <zero><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>207</LINE></zero>
+  <grid><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>211</LINE></grid>
+  <prepare_to_transfer><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>215</LINE></prepare_to_transfer>
+  <cycle><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm</FILE><LINE>365</LINE></cycle>
+ </LABELS>
+</ASSEMBLER_INFO>

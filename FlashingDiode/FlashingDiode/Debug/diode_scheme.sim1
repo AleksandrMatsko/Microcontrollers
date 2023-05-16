@@ -1,0 +1,17 @@
+<circuit version="1.0.0-SR0" rev="1320" stepSize="1000000" stepsPS="500000" NLsteps="100000" reaStep="1000000" animate="1" >
+
+<item itemtype="Led" CircId="Led-1" mainComp="false" Show_id="false" Show_Val="false" Pos="516,684" rotation="540" hflip="1" vflip="1" label="Led-1" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Color="Yellow" Grounded="false" Threshold="2.4 V" MaxCurrent="0.03 A" Resistance="0.6 Ω" />
+
+<item itemtype="MCU" CircId="mega168-2" mainComp="false" Show_id="true" Show_Val="false" Pos="560,596" rotation="0" hflip="1" vflip="1" label="mega168-2" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" varList="R22/0x0016/u8,R23/0x0017/u8,R19/0x0013/u8,PIND/0x0029/u8,PORTD/0x002B/u8,DDRD/0x002A/u8" Frequency="16 MHz" Program="FlashingDiode.hex" Auto_Load="false" Rst_enabled="false" Ext_Osc="false" Wdt_enabled="false" />
+
+<item itemtype="Resistor" CircId="Resistor-26" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="468,684" rotation="0" hflip="1" vflip="1" label="Resistor-26" idLabPos="-16,-24" labelrot="0" valLabPos="-16,6" valLabRot="0" Resistance="100 Ω" />
+
+<item itemtype="Ground" CircId="Ground-27" mainComp="false" Show_id="false" Show_Val="false" Pos="424,684" rotation="90" hflip="1" vflip="1" label="Ground-27" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Connector" uid="Connector-21" startpinid="mega168-2-PORTD5" endpinid="Led-1-lPin" pointList="552,684,532,684" />
+
+<item itemtype="Connector" uid="Connector-28" startpinid="Ground-27-Gnd" endpinid="Resistor-26-lPin" pointList="440,684,452,684" />
+
+<item itemtype="Connector" uid="Connector-29" startpinid="Resistor-26-rPin" endpinid="Led-1-rPin" pointList="484,684,500,684" />
+
+</circuit>

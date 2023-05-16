@@ -37,12 +37,13 @@ TC0_overflow_handler:
 	cpi		r22, LOW_STOP
 	brne	stop
 
-	in		r16, PIND
-	eor		r16, r19	; xor (1 << DD5)
-	out		PIND, r16
+	in		r16, PORTD
+	eor		r16, r19	; xor (1 << PORTD5)
+	out		PORTD, r16
 
 	ldi		r22, 0
 	ldi		r23, 0
+	out		TCNT0, r22
 
 stop:	
 	pop		r16
@@ -71,8 +72,8 @@ start:
 	out		DDRD, r16
 	ldi		r19, (1 << PIND5)
 	out		PIND, r19
-	ldi		r16, (1 << PORTD5)
-	out		PORTD, r16
+	ldi		r19, (1 << PORTD5)
+	out		PORTD, r19
 
 ; setting value to compare
 ;	ldi		r16, HIGH_LEVEL_FREQ
@@ -80,7 +81,7 @@ start:
 
 ; prepare for timer/counter interrupts
 ; normal mode
-	ldi		r16, (0 << WGM02) | (1 << CS00)
+	ldi		r16, (0 << WGM02) | (0 << CS02) | (0 << CS01) | (1 << CS00) ; clk / 1
 	out		TCCR0B, r16
 	ldi		r16, (0 << COM0B1) | (0 << COM0B0) | (0 << WGM01) | (0 << WGM00)
 	out		TCCR0A, r16

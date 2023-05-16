@@ -22,10 +22,10 @@
   <FILE>FlashingDiode.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <start><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FlashingDiode\FlashingDiode\main.asm</FILE><LINE>62</LINE></start>
+  <start><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FlashingDiode\FlashingDiode\main.asm</FILE><LINE>63</LINE></start>
   <TC0_overflow_handler><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FlashingDiode\FlashingDiode\main.asm</FILE><LINE>27</LINE></TC0_overflow_handler>
-  <stop><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FlashingDiode\FlashingDiode\main.asm</FILE><LINE>47</LINE></stop>
-  <TC0_cmp_handler><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FlashingDiode\FlashingDiode\main.asm</FILE><LINE>52</LINE></TC0_cmp_handler>
-  <cycle><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FlashingDiode\FlashingDiode\main.asm</FILE><LINE>99</LINE></cycle>
+  <stop><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FlashingDiode\FlashingDiode\main.asm</FILE><LINE>48</LINE></stop>
+  <TC0_cmp_handler><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FlashingDiode\FlashingDiode\main.asm</FILE><LINE>53</LINE></TC0_cmp_handler>
+  <cycle><FILE>C:\Users\AMats\Documents\Atmel Studio\7.0\FlashingDiode\FlashingDiode\main.asm</FILE><LINE>100</LINE></cycle>
  </LABELS>
 </ASSEMBLER_INFO>

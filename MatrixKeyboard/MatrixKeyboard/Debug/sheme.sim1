@@ -1,0 +1,105 @@
+<circuit version="1.0.0-SR0" rev="1320" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="1" >
+
+<item itemtype="MCU" CircId="mega168-1" mainComp="false" Show_id="true" Show_Val="false" Pos="888,576" rotation="0" hflip="1" vflip="1" label="mega168-1" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" varList="PORTD/0x002B/u8,TCNT0/0x0046/u8,PCIFR/0x003B/u8,PCICR/0x0068/u8,PORTC/0x0028/u8,PORTD/0x002B/u8,TCCR2A/0x00B0/u8,TCCR2B/0x00B1/u8,TCCR0A/0x0044/u8,TCCR0B/0x0045/u8,TCNT2/0x00B2/u8,TIMSK0/0x006E/u8,TIMSK2/0x0070/u8,DDRC/0x0027/u8,DDRD/0x002A/u8,PINC/0x0026/u8,PIND/0x0029/u8,R17/0x0011/u8,R18/0x0012/u8,R20/0x0014/u8,R21/0x0015/u8,MCUCR/0x0055/u8" Frequency="16 MHz" Program="MatrixKeyboard.hex" Auto_Load="false" Rst_enabled="false" Ext_Osc="false" Wdt_enabled="false" />
+
+<item itemtype="KeyPad" CircId="KeyPad-2" mainComp="false" Show_id="false" Show_Val="false" Pos="840,468" rotation="0" hflip="1" vflip="1" label="KeyPad-2" idLabPos="-8,-16" labelrot="0" valLabPos="-16,20" valLabRot="0" Rows="4 _Кнопок" Cols="3 _Кнопок" Key_Labels="123456789*0#" />
+
+<item itemtype="Ground" CircId="Ground-10" mainComp="false" Show_id="false" Show_Val="false" Pos="1672,856" rotation="0" hflip="1" vflip="1" label="Ground-10" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="KeyPad" CircId="KeyPad-11" mainComp="false" Show_id="false" Show_Val="false" Pos="1616,676" rotation="0" hflip="1" vflip="1" label="KeyPad-11" idLabPos="-8,-16" labelrot="0" valLabPos="-16,20" valLabRot="0" Rows="4 _Кнопок" Cols="3 _Кнопок" Key_Labels="123456789*0#" />
+
+<item itemtype="Fixed Voltage" CircId="Fixed Voltage-12" mainComp="false" ShowProp="Voltage" Show_id="false" Show_Val="true" Pos="1808,640" rotation="90" hflip="1" vflip="1" label="Fixed Voltage-12" idLabPos="-64,-24" labelrot="0" valLabPos="-16,8" valLabRot="0" Out="false" Voltage="5 V" />
+
+<item itemtype="Voltimeter" CircId="Voltimeter-13" mainComp="false" Show_id="false" Show_Val="false" Pos="1584,808" rotation="0" hflip="1" vflip="1" label="Voltimeter-13" idLabPos="-24,-40" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Fixed Voltage" CircId="Fixed Voltage-14" mainComp="false" ShowProp="Voltage" Show_id="false" Show_Val="true" Pos="1776,640" rotation="90" hflip="1" vflip="1" label="Fixed Voltage-14" idLabPos="-64,-24" labelrot="0" valLabPos="-16,8" valLabRot="0" Out="false" Voltage="5 V" />
+
+<item itemtype="Ground" CircId="Ground-15" mainComp="false" Show_id="false" Show_Val="false" Pos="1752,856" rotation="0" hflip="1" vflip="1" label="Ground-15" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Voltimeter" CircId="Voltimeter-16" mainComp="false" Show_id="false" Show_Val="false" Pos="1744,812" rotation="0" hflip="1" vflip="1" label="Voltimeter-16" idLabPos="-24,-40" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Voltimeter" CircId="Voltimeter-17" mainComp="false" Show_id="false" Show_Val="false" Pos="1664,812" rotation="0" hflip="1" vflip="1" label="Voltimeter-17" idLabPos="-24,-40" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Fixed Voltage" CircId="Fixed Voltage-18" mainComp="false" ShowProp="Voltage" Show_id="false" Show_Val="true" Pos="1692,640" rotation="90" hflip="1" vflip="1" label="Fixed Voltage-18" idLabPos="-64,-24" labelrot="0" valLabPos="-16,8" valLabRot="0" Out="false" Voltage="5 V" />
+
+<item itemtype="Ground" CircId="Ground-19" mainComp="false" Show_id="false" Show_Val="false" Pos="1552,860" rotation="0" hflip="1" vflip="1" label="Ground-19" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Fixed Voltage" CircId="Fixed Voltage-20" mainComp="false" ShowProp="Voltage" Show_id="false" Show_Val="true" Pos="1732,640" rotation="90" hflip="1" vflip="1" label="Fixed Voltage-20" idLabPos="-64,-24" labelrot="0" valLabPos="-16,8" valLabRot="0" Out="false" Voltage="5 V" />
+
+<item itemtype="Ground" CircId="Ground-31" mainComp="false" Show_id="false" Show_Val="false" Pos="1640,872" rotation="0" hflip="1" vflip="1" label="Ground-31" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="KeyPad" CircId="KeyPad-32" mainComp="false" Show_id="false" Show_Val="false" Pos="1584,692" rotation="0" hflip="1" vflip="1" label="KeyPad-32" idLabPos="-8,-16" labelrot="0" valLabPos="-16,20" valLabRot="0" Rows="4 _Кнопок" Cols="3 _Кнопок" Key_Labels="123456789*0#" />
+
+<item itemtype="Fixed Voltage" CircId="Fixed Voltage-33" mainComp="false" ShowProp="Voltage" Show_id="false" Show_Val="true" Pos="1776,656" rotation="90" hflip="1" vflip="1" label="Fixed Voltage-33" idLabPos="-64,-24" labelrot="0" valLabPos="-16,8" valLabRot="0" Out="false" Voltage="5 V" />
+
+<item itemtype="Voltimeter" CircId="Voltimeter-34" mainComp="false" Show_id="false" Show_Val="false" Pos="1552,824" rotation="0" hflip="1" vflip="1" label="Voltimeter-34" idLabPos="-24,-40" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Fixed Voltage" CircId="Fixed Voltage-35" mainComp="false" ShowProp="Voltage" Show_id="false" Show_Val="true" Pos="1744,656" rotation="90" hflip="1" vflip="1" label="Fixed Voltage-35" idLabPos="-64,-24" labelrot="0" valLabPos="-16,8" valLabRot="0" Out="false" Voltage="5 V" />
+
+<item itemtype="Ground" CircId="Ground-36" mainComp="false" Show_id="false" Show_Val="false" Pos="1720,872" rotation="0" hflip="1" vflip="1" label="Ground-36" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Voltimeter" CircId="Voltimeter-37" mainComp="false" Show_id="false" Show_Val="false" Pos="1712,828" rotation="0" hflip="1" vflip="1" label="Voltimeter-37" idLabPos="-24,-40" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Voltimeter" CircId="Voltimeter-38" mainComp="false" Show_id="false" Show_Val="false" Pos="1632,828" rotation="0" hflip="1" vflip="1" label="Voltimeter-38" idLabPos="-24,-40" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Fixed Voltage" CircId="Fixed Voltage-39" mainComp="false" ShowProp="Voltage" Show_id="false" Show_Val="true" Pos="1660,656" rotation="90" hflip="1" vflip="1" label="Fixed Voltage-39" idLabPos="-64,-24" labelrot="0" valLabPos="-16,8" valLabRot="0" Out="false" Voltage="5 V" />
+
+<item itemtype="Ground" CircId="Ground-40" mainComp="false" Show_id="false" Show_Val="false" Pos="1520,876" rotation="0" hflip="1" vflip="1" label="Ground-40" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Fixed Voltage" CircId="Fixed Voltage-41" mainComp="false" ShowProp="Voltage" Show_id="false" Show_Val="true" Pos="1700,656" rotation="90" hflip="1" vflip="1" label="Fixed Voltage-41" idLabPos="-64,-24" labelrot="0" valLabPos="-16,8" valLabRot="0" Out="false" Voltage="5 V" />
+
+<item itemtype="Connector" uid="connector-3" startpinid="KeyPad-2-Pin3" endpinid="mega168-1-PORTC3" pointList="888,524,964,524,964,600,928,600" />
+
+<item itemtype="Connector" uid="connector-4" startpinid="mega168-1-PORTC2" endpinid="KeyPad-2-Pin2" pointList="928,608,980,608,980,508,888,508" />
+
+<item itemtype="Connector" uid="connector-5" startpinid="mega168-1-PORTC1" endpinid="KeyPad-2-Pin1" pointList="928,616,996,616,996,492,888,492" />
+
+<item itemtype="Connector" uid="connector-6" startpinid="mega168-1-PORTC0" endpinid="KeyPad-2-Pin0" pointList="928,624,1004,624,1004,476,888,476" />
+
+<item itemtype="Connector" uid="connector-7" startpinid="mega168-1-PORTD4" endpinid="KeyPad-2-Pin6" pointList="880,624,872,624,872,540" />
+
+<item itemtype="Connector" uid="connector-8" startpinid="mega168-1-PORTD5" endpinid="KeyPad-2-Pin5" pointList="880,664,856,664,856,540" />
+
+<item itemtype="Connector" uid="connector-9" startpinid="KeyPad-2-Pin4" endpinid="mega168-1-PORTD6" pointList="840,540,840,672,880,672" />
+
+<item itemtype="Connector" uid="Connector-21" startpinid="Fixed Voltage-14-outnod" endpinid="KeyPad-11-Pin2" pointList="1776,656,1776,716,1664,716" />
+
+<item itemtype="Connector" uid="Connector-22" startpinid="Voltimeter-13-lPin" endpinid="KeyPad-11-Pin4" pointList="1576,824,1548,824,1548,768,1616,768,1616,748" />
+
+<item itemtype="Connector" uid="Connector-23" startpinid="Fixed Voltage-20-outnod" endpinid="KeyPad-11-Pin1" pointList="1732,656,1732,700,1664,700" />
+
+<item itemtype="Connector" uid="Connector-24" startpinid="Voltimeter-17-rPin" endpinid="Ground-10-Gnd" pointList="1672,828,1672,840" />
+
+<item itemtype="Connector" uid="Connector-25" startpinid="Voltimeter-17-lPin" endpinid="KeyPad-11-Pin5" pointList="1656,828,1632,828,1632,748" />
+
+<item itemtype="Connector" uid="Connector-26" startpinid="Ground-19-Gnd" endpinid="Voltimeter-13-rPin" pointList="1552,844,1552,840,1592,840,1592,824" />
+
+<item itemtype="Connector" uid="Connector-27" startpinid="Voltimeter-16-lPin" endpinid="KeyPad-11-Pin6" pointList="1736,828,1708,828,1708,752,1648,752,1648,748" />
+
+<item itemtype="Connector" uid="Connector-28" startpinid="Fixed Voltage-12-outnod" endpinid="KeyPad-11-Pin3" pointList="1808,656,1808,732,1664,732" />
+
+<item itemtype="Connector" uid="Connector-29" startpinid="Fixed Voltage-18-outnod" endpinid="KeyPad-11-Pin0" pointList="1692,656,1692,684,1664,684" />
+
+<item itemtype="Connector" uid="Connector-30" startpinid="Voltimeter-16-rPin" endpinid="Ground-15-Gnd" pointList="1752,828,1752,840" />
+
+<item itemtype="Connector" uid="Connector-42" startpinid="Fixed Voltage-35-outnod" endpinid="KeyPad-32-Pin2" pointList="1744,672,1744,732,1632,732" />
+
+<item itemtype="Connector" uid="Connector-43" startpinid="Voltimeter-34-lPin" endpinid="KeyPad-32-Pin4" pointList="1544,840,1516,840,1516,784,1584,784,1584,764" />
+
+<item itemtype="Connector" uid="Connector-44" startpinid="Fixed Voltage-41-outnod" endpinid="KeyPad-32-Pin1" pointList="1700,672,1700,716,1632,716" />
+
+<item itemtype="Connector" uid="Connector-45" startpinid="Voltimeter-38-rPin" endpinid="Ground-31-Gnd" pointList="1640,844,1640,856" />
+
+<item itemtype="Connector" uid="Connector-46" startpinid="Voltimeter-38-lPin" endpinid="KeyPad-32-Pin5" pointList="1624,844,1600,844,1600,764" />
+
+<item itemtype="Connector" uid="Connector-47" startpinid="Ground-40-Gnd" endpinid="Voltimeter-34-rPin" pointList="1520,860,1520,856,1560,856,1560,840" />
+
+<item itemtype="Connector" uid="Connector-48" startpinid="Voltimeter-37-lPin" endpinid="KeyPad-32-Pin6" pointList="1704,844,1676,844,1676,768,1616,768,1616,764" />
+
+<item itemtype="Connector" uid="Connector-49" startpinid="Fixed Voltage-33-outnod" endpinid="KeyPad-32-Pin3" pointList="1776,672,1776,748,1632,748" />
+
+<item itemtype="Connector" uid="Connector-50" startpinid="Fixed Voltage-39-outnod" endpinid="KeyPad-32-Pin0" pointList="1660,672,1660,700,1632,700" />
+
+<item itemtype="Connector" uid="Connector-51" startpinid="Voltimeter-37-rPin" endpinid="Ground-36-Gnd" pointList="1720,844,1720,856" />
+
+</circuit>
