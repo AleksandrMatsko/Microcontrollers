@@ -1,0 +1,15 @@
+<circuit version="1.0.0-SR0" rev="1320" stepSize="1000000" stepsPS="10000" NLsteps="100000" reaStep="1000000" animate="1" >
+
+<item itemtype="MCU" CircId="mega168-1" mainComp="false" Show_id="true" Show_Val="false" Pos="716,600" rotation="0" hflip="1" vflip="1" label="mega168-1" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" varList="/---/uint8,R19/0x0013/u8,PORTB/0x0025/u8,DDRB/0x0024/u8,SPCR/0x004C/u8,SPDR/0x004E/u8,SPSR/0x004D/u8" Frequency="16 MHz" Program="C:/Users/AMats/Documents/Atmel Studio/7.0/SPI/Master/Master/Debug/Master.hex" Auto_Load="false" Rst_enabled="false" Ext_Osc="false" Wdt_enabled="false" />
+
+<item itemtype="MCU" CircId="mega168-3" mainComp="false" Show_id="true" Show_Val="false" Pos="880,600" rotation="0" hflip="1" vflip="1" label="mega168-3" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" varList="PORTB/0x0025/u8,DDRB/0x0024/u8,SPCR/0x004C/u8,SPDR/0x004E/u8,SPSR/0x004D/u8,R18/0x0012/u8,UCSR0B/0x00C1/u8" Frequency="16 MHz" Program="C:/Users/AMats/Documents/Atmel Studio/7.0/SPI/Slave/Slave/Debug/Slave.hex" Auto_Load="false" Rst_enabled="false" Ext_Osc="false" Wdt_enabled="false" />
+
+<item itemtype="Connector" uid="Connector-4" startpinid="mega168-1-PORTB2" endpinid="mega168-3-PORTB2" pointList="756,704,772,704,772,728,932,728,932,704,920,704" />
+
+<item itemtype="Connector" uid="Connector-5" startpinid="mega168-1-PORTB3" endpinid="mega168-3-PORTB3" pointList="756,696,788,696,788,744,940,744,940,696,920,696" />
+
+<item itemtype="Connector" uid="Connector-6" startpinid="mega168-1-PORTB4" endpinid="mega168-3-PORTB4" pointList="756,688,800,688,800,752,948,752,948,688,920,688" />
+
+<item itemtype="Connector" uid="Connector-7" startpinid="mega168-1-PORTB5" endpinid="mega168-3-PORTB5" pointList="756,680,812,680,812,760,956,760,956,680,920,680" />
+
+</circuit>

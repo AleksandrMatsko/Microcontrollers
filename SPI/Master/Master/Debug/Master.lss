@@ -1,10 +1,10 @@
 
-AVRASM ver. 2.2.8  C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm Tue May 16 15:17:49 2023
+AVRASM ver. 2.2.8  C:\Users\AMats\Documents\Atmel Studio\7.0\SPI\Master\Master\main.asm Sun May 21 20:44:35 2023
 
 [builtin](2): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
-C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm(9): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
+C:\Users\AMats\Documents\Atmel Studio\7.0\SPI\Master\Master\main.asm(9): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
 [builtin](2): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
-C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm(9): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
+C:\Users\AMats\Documents\Atmel Studio\7.0\SPI\Master\Master\main.asm(9): Including file 'D:/programming\Microchip Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m168def.inc'
                                  
                                  ;
                                  
@@ -982,9 +982,9 @@ C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm
                                  
                                  ; ***** END OF FILE ******************************************************
                                  
-                                 ; MatrixKeyboard.asm
+                                 ; Master.asm
                                  ;
-                                 ; Created: 25.04.2023 14:32:50
+                                 ; Created: 16.05.2023 15:19:54
                                  ; Author : AMats
                                  ;
                                  
@@ -1034,363 +1034,117 @@ C:\Users\AMats\Documents\Atmel Studio\7.0\MatrixKeyboard\MatrixKeyboard\main.asm
                                  
                                  ; ***** END OF FILE ******************************************************
                                  	
-                                 .equ	line_0 = 0b00000001
-                                 .equ	line_1 = 0b00000010
-                                 .equ	line_2 = 0b00000100
-                                 .equ	line_3 = 0b00001000
-                                 
-                                 .equ	column_0 = 0b01000000
-                                 .equ	column_1 = 0b00100000
-                                 .equ	column_2 = 0b00010000
-                                 .equ	default_val = 0b01110000
-                                 
-                                 .equ	ascii_0 = 48
-                                 .equ	ascii_1 = 49
-                                 .equ	ascii_2 = 50
-                                 .equ	ascii_3 = 51
-                                 .equ	ascii_4 = 52
-                                 .equ	ascii_5 = 53
-                                 .equ	ascii_6 = 54
-                                 .equ	ascii_7 = 55
-                                 .equ	ascii_8 = 56
-                                 .equ	ascii_9 = 57
-                                 .equ	star_ascii = 42
-                                 .equ	grid_ascii = 35
-                                 
-                                 
-                                 .equ	POLL_TIMEOUT = 7
-                                 .equ	DELAY_TIMEOUT = 1
                                  
                                  .DSEG
                                  
-                                 
-000100                           to_send:	.BYTE 1
+000100                           to_send:		.BYTE	1
                                  
                                  .CSEG
                                  
-000000 c0d6                      .org 0x0000		rjmp start
-                                 ;.org 0x001E		rjmp TC0_cmp_handler
-00000a c01f                      .org 0x000a		rjmp PCINT2_handler
-000012 c029                      .org 0x0012		rjmp TC2_overflow_handler
-000020 c028                      .org 0x0020		rjmp TC0_overflow_handler
-000026 940c 00be                 .org 0x0026		jmp Data_empty_interrupt
-000028 940c 00cc                 .org 0x0028		jmp TRNS_complete_interrupt
+000000 940c 0044                 .org 0x0000		jmp start
+000022 940c 0039                 .org 0x0022		jmp SPI_complete_interrupt
+000024 940c 0026                 .org 0x0024		jmp RCV_complete_interrupt
                                  
                                  
-                                 PCINT2_handler:
-00002a b70f                      	in		r16, SREG
-00002b 930f                      	push	r16
+                                 RCV_complete_interrupt:
+000026 b70f                      	in		r16, SREG
+000027 930f                      	push	r16
                                  
-                                 ; start timer counter 0
-00002c e060                      	ldi		r22, 0
-00002d bd66                      	out		TCNT0, r22
+000028 ece6                      	ldi		r30, low(UDR0)
+000029 e0f0                      	ldi		r31, high(UDR0)
+00002a 8130                      	ld		r19, Z	; get data in r16
                                  
-00002e e000                      	ldi		r16, (0 << PCIE2)
-00002f e6e8                      	ldi		r30, low(PCICR)
-000030 e0f0                      	ldi		r31, high(PCICR)
-000031 8300                      	st		Z, r16
+00002b e0e0                      	ldi		r30, low(to_send)
+00002c e0f1                      	ldi		r31, high(to_send)
+00002d 8330                      	st		Z, r19
                                  
-000032 e000                      	ldi		r16, (0 << TOIE2)
-000033 e7e0                      	ldi		r30, low(TIMSK2)
-000034 e0f0                      	ldi		r31, high(TIMSK2)
+                                 	; TODO turn on SPI
+                                 	; set low on SS
+00002e b115                      	in		r17, PORTB
+00002f 7f1b                      	andi	r17, ~(1 << PORTB2)
+000030 b915                      	out		PORTB, r17
+                                 
+                                 	; place data to send
+000031 bd3e                      	out		SPDR, r19
+                                 
+                                 	; turn off USART
+000032 e000                      	ldi		r16, (0 << RXEN0) | (0 << RXCIE0)  ; enable receiver and receive interrupt
+000033 ece1                      	ldi		r30, low(UCSR0B)
+000034 e0f0                      	ldi		r31, high(UCSR0B)
 000035 8300                      	st		Z, r16
                                  
-000036 e001                      	ldi		r16, (1 << TOIE0) ; turn on timer counter 0
-000037 e6ee                      	ldi		r30, low(TIMSK0)
-000038 e0f0                      	ldi		r31, high(TIMSK0)
-000039 8300                      	st		Z, r16
+                                 stop:
+000036 910f                      	pop		r16
+000037 bf0f                      	out		SREG, r16
+000038 9518                      	reti
                                  
-00003a 940c 00bb                 	jmp		stop
                                  
-                                 TC2_overflow_handler: ; polling
-00003c b70f                      	in		r16, SREG
-00003d 930f                      	push	r16
+                                 SPI_complete_interrupt:
+000039 b70f                      	in		r16, SREG
+00003a 930f                      	push	r16
                                  
-00003e b118                      	in		r17, PORTC
-00003f 3018                      	cpi		r17, (1 << PORTC3)
-000040 f021                      	breq	return_to_PC0
-000041 0f11                      	lsl		r17
-000042 b918                      	out		PORTC, r17
+                                 	; set SS high
+00003b b115                      	in		r17, PORTB
+00003c 6014                      	ori	r17, (1 << PORTB2)
+00003d b915                      	out		PORTB, r17
                                  
-000043 940c 00b6                 	jmp		restore_pin_change
+                                 	; turn on USART
+00003e e900                      	ldi		r16, (1 << RXEN0) | (1 << RXCIE0)  ; enable receiver and receive interrupt
+00003f ece1                      	ldi		r30, low(UCSR0B)
+000040 e0f0                      	ldi		r31, high(UCSR0B)
+000041 8300                      	st		Z, r16
                                  
-                                 return_to_PC0:
-000045 e011                      	ldi		r17, (1 << PORTC0)
-000046 b918                      	out		PORTC, r17
-                                 
-000047 940c 00b6                 	jmp		restore_pin_change
-                                 
-                                 TC0_overflow_handler:
-000049 b70f                      	in		r16, SREG
-00004a 930f                      	push	r16
+000042 940c 0036                 	jmp		stop
                                  	
-00004b b119                      	in		r17, PIND
-00004c b126                      	in		r18, PINC
-                                 
-00004d e000                      	ldi		r16, (0 << TOIE0) ; turn off timer counter
-00004e e6ee                      	ldi		r30, low(TIMSK0)
-00004f e0f0                      	ldi		r31, high(TIMSK0)
-000050 8300                      	st		Z, r16
-                                 
-000051 3710                      	cpi		r17, default_val
-000052 f411                      	brne	analyse
-000053 940c 00ae                 	jmp		restore_TCNT2
-                                 
-                                 ; analyse value
-                                 analyse:
-000055 2f41                      	mov		r20, r17	; for debug
-000056 2f52                      	mov		r21, r18	; for debug
-                                 
-000057 e0c0                      	ldi		r28, low(to_send)
-000058 e0d1                      	ldi		r29, high(to_send)
-                                 	
-000059 3021                      	cpi		r18, line_0
-00005a f041                      	breq	first_line
-00005b 3022                      	cpi		r18, line_1
-00005c f071                      	breq	second_line
-00005d 3024                      	cpi		r18, line_2
-00005e f0a1                      	breq	third_line
-00005f 3028                      	cpi		r18, line_3
-000060 f0d1                      	breq	fourth_line
-000061 940c 00ae                 	jmp		restore_TCNT2
-                                 
-                                 first_line:
-000063 3410                      	cpi		r17, column_0
-000064 f0f1                      	breq	one
-000065 3210                      	cpi		r17, column_1
-000066 f0f9                      	breq	two
-000067 3110                      	cpi		r17, column_2
-000068 f101                      	breq	three
-000069 940c 00ae                 	jmp		restore_TCNT2
-                                 
-                                 second_line:
-00006b 3410                      	cpi		r17, column_0
-00006c f0f9                      	breq	four
-00006d 3210                      	cpi		r17, column_1
-00006e f101                      	breq	five
-00006f 3110                      	cpi		r17, column_2
-000070 f109                      	breq	six
-000071 940c 00ae                 	jmp		restore_TCNT2
-                                 
-                                 third_line:
-000073 3410                      	cpi		r17, column_0
-000074 f101                      	breq	seven
-000075 3210                      	cpi		r17, column_1
-000076 f109                      	breq	eight
-000077 3110                      	cpi		r17, column_2
-000078 f111                      	breq	nine
-000079 940c 00ae                 	jmp		restore_TCNT2
-                                 
-                                 fourth_line:
-00007b 3410                      	cpi		r17, column_0
-00007c f109                      	breq	star
-00007d 3210                      	cpi		r17, column_1
-00007e f111                      	breq	zero
-00007f 3110                      	cpi		r17, column_2
-000080 f119                      	breq	grid
-000081 940c 00ae                 	jmp		restore_TCNT2
-                                 
-                                 one:
-000083 e331                      	ldi		r19, ascii_1
-000084 940c 00a7                 	jmp		prepare_to_transfer
-                                 
-                                 two:
-000086 e332                      	ldi		r19, ascii_2
-000087 940c 00a7                 	jmp		prepare_to_transfer
-                                 
-                                 three:
-000089 e333                      	ldi		r19, ascii_3
-00008a 940c 00a7                 	jmp		prepare_to_transfer
-                                 
-                                 four:
-00008c e334                      	ldi		r19, ascii_4
-00008d 940c 00a7                 	jmp		prepare_to_transfer
-                                 
-                                 five:
-00008f e335                      	ldi		r19, ascii_5
-000090 940c 00a7                 	jmp		prepare_to_transfer
-                                 
-                                 six:
-000092 e336                      	ldi		r19, ascii_6
-000093 940c 00a7                 	jmp		prepare_to_transfer
-                                 
-                                 seven:
-000095 e337                      	ldi		r19, ascii_7
-000096 940c 00a7                 	jmp		prepare_to_transfer
-                                 
-                                 eight:
-000098 e338                      	ldi		r19, ascii_8
-000099 940c 00a7                 	jmp		prepare_to_transfer
-                                 
-                                 nine:
-00009b e339                      	ldi		r19, ascii_9
-00009c 940c 00a7                 	jmp		prepare_to_transfer
-                                 
-                                 star:
-00009e e23a                      	ldi		r19, star_ascii
-00009f 940c 00a7                 	jmp		prepare_to_transfer
-                                 
-                                 zero:
-0000a1 e330                      	ldi		r19, ascii_0
-0000a2 940c 00a7                 	jmp		prepare_to_transfer
-                                 
-                                 grid:
-0000a4 e233                      	ldi		r19, grid_ascii
-0000a5 940c 00a7                 	jmp		prepare_to_transfer
-                                 
-                                 prepare_to_transfer:
-0000a7 8338                      	st		Y, r19
-                                 
-0000a8 e218                      	ldi		r17, (1 << TXEN0) | (1 << UDRIE0) ; enable transmiter, data empty interrupt 
-0000a9 ece1                      	ldi		r30, low(UCSR0B)
-0000aa e0f0                      	ldi		r31, high(UCSR0B)
-0000ab 8310                      	st		Z, r17
-0000ac 940c 00bb                 	jmp		stop
-                                 
-                                 restore_TCNT2:
-0000ae e060                      	ldi		r22, 0
-0000af ebe2                      	ldi		r30, low(TCNT2)
-0000b0 e0f0                      	ldi		r31, high(TCNT2)
-0000b1 8360                      	st		Z, r22
-                                 
-0000b2 e001                      	ldi		r16, (1 << TOIE2)
-0000b3 e7e0                      	ldi		r30, low(TIMSK2)
-0000b4 e0f0                      	ldi		r31, high(TIMSK2)
-0000b5 8300                      	st		Z, r16
-                                 
-                                 restore_pin_change:
-0000b6 e004                      	ldi		r16, (1 << PCIE2)
-0000b7 e6e8                      	ldi		r30, low(PCICR)
-0000b8 e0f0                      	ldi		r31, high(PCICR)
-0000b9 8300                      	st		Z, r16
-0000ba c000                      	rjmp	stop
-                                 	
-                                 stop:	
-0000bb 910f                      	pop		r16
-0000bc bf0f                      	out		SREG, r16
-0000bd 9518                      	reti
-                                 
-                                 
-                                 Data_empty_interrupt:
-0000be b70f                      	in		r16, SREG
-0000bf 930f                      	push	r16
-                                 
-0000c0 e0c0                      	ldi		r28, low(to_send)
-0000c1 e0d1                      	ldi		r29, high(to_send)
-0000c2 8128                      	ld		r18, Y		; get val from memory on position [index]
-                                 
-0000c3 ecc6                      	ldi		r28, low(UDR0)
-0000c4 e0d0                      	ldi		r29, high(UDR0)
-0000c5 8328                      	st		Y, r18		; put the val into data register to send
-                                 
-0000c6 94f8                      	cli
-                                 
-0000c7 e418                      	ldi		r17, (1 << TXEN0) | (1 << TXCIE0); enable transmiter, transmitter interrupt and turned off data_empty_interrupt
-0000c8 ece1                      	ldi		r30, low(UCSR0B)
-0000c9 e0f0                      	ldi		r31, high(UCSR0B)
-0000ca 8310                      	st		Z, r17
-                                 
-0000cb cfef                      	rjmp	stop
-                                 
-                                 
-                                 TRNS_complete_interrupt:
-0000cc b70f                      	in		r16, SREG
-0000cd 930f                      	push	r16
-                                 
-0000ce e000                      	ldi		r16, 0 ; turn off
-0000cf ece1                      	ldi		r30, low(UCSR0B)
-0000d0 e0f0                      	ldi		r31, high(UCSR0B)
-0000d1 8300                      	st		Z, r16
-                                 
-0000d2 e004                      	ldi		r16, (1 << PCIE2)
-0000d3 e6e8                      	ldi		r30, low(PCICR)
-0000d4 e0f0                      	ldi		r31, high(PCICR)
-0000d5 8300                      	st		Z, r16
-                                 
-0000d6 cfe4                      	rjmp	stop
-                                 
-                                 
                                  
                                  start:
-0000d7 94f8                      	cli
-0000d8 ef0f                      	ldi		r16, low(RAMEND)
-0000d9 bf0d                      	out		SPL, r16
-0000da e004                      	ldi		r16, high(RAMEND)
-0000db bf0e                      	out		SPH, r16
+000044 94f8                          cli
+                                 		
+000045 ef0f                      	ldi		r16, low(RAMEND)
+000046 bf0d                      	out		SPL, r16
+000047 e004                      	ldi		r16, high(RAMEND)
+000048 bf0e                      	out		SPH, r16
                                  
-0000dc e000                      	ldi		r16, 0
-0000dd ece0                      	ldi		r30, low(UCSR0A)
-0000de e0f0                      	ldi		r31, high(UCSR0A)
-0000df 8300                      	st		Z, r16	; clear all flags
+                                 	; USART settings
+000049 e000                      	ldi		r16, 0
+00004a ece0                      	ldi		r30, low(UCSR0A)
+00004b e0f0                      	ldi		r31, high(UCSR0A)
+00004c 8300                      	st		Z, r16	; clear all flags
                                  
-0000e0 e006                      	ldi		r16, (0 << UMSEL01) | (0 << UMSEL00) | (0 << UPM01) | (0 << UPM00) | (0 << USBS0) | (1 << UCSZ01) | (1 << UCSZ00) ; choose async mode, disable parity, one stop bit, 8-bit of data
-0000e1 ece2                      	ldi		r30, low(UCSR0C)
-0000e2 e0f0                      	ldi		r31, high(UCSR0C)
-0000e3 8300                      	st		Z, r16  ; set configuration
+00004d e006                      	ldi		r16, (0 << UMSEL01) | (0 << UMSEL00) | (0 << UPM01) | (0 << UPM00) | (0 << USBS0) | (1 << UCSZ01) | (1 << UCSZ00) ; choose async mode, disable parity, one stop bit, 8-bit of data
+00004e ece2                      	ldi		r30, low(UCSR0C)
+00004f e0f0                      	ldi		r31, high(UCSR0C)
+000050 8300                      	st		Z, r16  ; set configuration
                                  
-0000e4 e607                      	ldi		r16, 103
-0000e5 ece4                      	ldi		r30, low(UBRR0L)
-0000e6 e0f0                      	ldi		r31, high(UBRR0L)
-0000e7 8300                      	st		Z, r16
+000051 e607                      	ldi		r16, 103
+000052 ece4                      	ldi		r30, low(UBRR0L)
+000053 e0f0                      	ldi		r31, high(UBRR0L)
+000054 8300                      	st		Z, r16
                                  
-                                 ; turn on output
-0000e8 e00f                      	ldi		r16, (1 << DDC3) | (1 << DDC2) | (1 << DDC1) | (1 << DDC0)
-0000e9 b907                      	out		DDRC, r16
-0000ea e000                      	ldi		r16, (0 << PORTC3) | (0 << PORTC2) | (0 << PORTC1) | (0 << PORTC0)
-0000eb b908                      	out		PORTC, r16
+000055 e900                      	ldi		r16, (1 << RXEN0) | (1 << RXCIE0)  ; enable receiver and receive interrupt
+000056 ece1                      	ldi		r30, low(UCSR0B)
+000057 e0f0                      	ldi		r31, high(UCSR0B)
+000058 8300                      	st		Z, r16
                                  
-                                 ; turn on input
-0000ec e000                      	ldi		r16, (0 << DDD4) | (0 << DDD5) | (0 << DDD6) 
-0000ed b90a                      	out		DDRD, r16
-0000ee e000                      	ldi		r16, (0 << PORTD4) | (0 << PORTD5) | (0 << PORTD6)
-0000ef b90b                      	out		PORTD, r16
+                                 	; SPI settings
+                                 	; turn on spi, big-endian, master
+000059 ed02                      	ldi		r16, (1 << SPIE) | (1 << SPE) | (0 << DORD) | (1 << MSTR) | (0 << CPOL) | (0 << CPHA) | (1 << SPR1) | (0 << SPR0)
+00005a bd0c                      	out		SPCR, r16
                                  
-0000f0 e011                      	ldi		r17, (1 << PORTC0)
-0000f1 b918                      	out		PORTC, r17
+00005b e20c                      	ldi		r16, (1 << DDB5) | (1 << DDB3) | (1 << DDB2)
+00005c b904                      	out		DDRB, r16
                                  
-0000f2 e100                      	ldi		r16, (1 << PUD)
-0000f3 e3e5                      	ldi		r30, low(MCUCR)
-0000f4 e0f0                      	ldi		r31, high(MCUCR)
-0000f5 8300                      	st		Z, r16
+00005d e30c                      	ldi		r16, (1 << PORTB5) | (1 << PORTB4) | (1 << PORTB3) | (1 << PORTB2)
+00005e b905                      	out		PORTB, r16
                                  
+00005f 9478                      	sei
                                  
-                                 ; prepare for timer/counter interrupts
-                                 ; normal mode
-0000f6 e002                      	ldi		r16, (0 << WGM02) | (0 << CS02) | (1 << CS01) | (0 << CS00) ; clk / 8
-0000f7 bd05                      	out		TCCR0B, r16
-0000f8 e000                      	ldi		r16, (0 << COM0B1) | (0 << COM0B0) | (0 << WGM01) | (0 << WGM00)
-0000f9 bd04                      	out		TCCR0A, r16
-                                 
-0000fa e005                      	ldi		r16, (0 << WGM22) | (1 << CS22) | (0 << CS21) | (1 << CS20) ; clk / 1024
-0000fb ebe1                      	ldi		r30, low(TCCR2B)
-0000fc e0f0                      	ldi		r31, high(TCCR2B)
-0000fd 8300                      	st		Z, r16
-0000fe e000                      	ldi		r16, (0 << COM2B1) | (0 << COM2B0) | (0 << WGM21) | (0 << WGM20)
-0000ff ebe0                      	ldi		r30, low(TCCR2A)
-000100 e0f0                      	ldi		r31, high(TCCR2A)
-000101 8300                      	st		Z, r16
-                                 
-000102 e001                      	ldi		r16, (1 << TOIE2)
-000103 e7e0                      	ldi		r30, low(TIMSK2)
-000104 e0f0                      	ldi		r31, high(TIMSK2)
-000105 8300                      	st		Z, r16
-                                 
-000106 e004                      	ldi		r16, (1 << PCIE2)
-000107 e6e8                      	ldi		r30, low(PCICR)
-000108 e0f0                      	ldi		r31, high(PCICR)
-000109 8300                      	st		Z, r16
-                                 
-00010a e700                      	ldi		r16, (1 << PCINT22) | (1 << PCINT21) | (1 << PCINT20)
-00010b e6ed                      	ldi		r30, low(PCMSK2)
-00010c e0f0                      	ldi		r31, high(PCMSK2)
-00010d 8300                      	st		Z, r16
-                                 
-00010e 9478                      	sei
+                                 loop:
+000060 0000                      	nop
+000061 cffe                      	rjmp	loop
                                  
                                  
-                                 cycle:
-00010f 0000                      	nop
-000110 940c 010f                 	jmp		cycle
+                                 
                                  
 
 
@@ -1409,39 +1163,39 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega168" register use summary:
-x  :   0 y  :   3 z  :  20 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
+x  :   0 y  :   0 z  :   8 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  62 r17:  27 r18:   8 r19:  13 r20:   1 
-r21:   1 r22:   4 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   3 
-r29:   3 r30:  20 r31:  20 
-Registers used: 13 out of 35 (37.1%)
+r13:   0 r14:   0 r15:   0 r16:  28 r17:   6 r18:   0 r19:   3 r20:   0 
+r21:   0 r22:   0 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
+r29:   0 r30:   8 r31:   8 
+Registers used: 6 out of 35 (17.1%)
 
 "ATmega168" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   0 
-andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   0 brcs  :   0 break :   0 breq  :  17 brge  :   0 brhc  :   0 
+andi  :   1 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
+brcc  :   0 brcs  :   0 break :   0 breq  :   0 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
-brne  :   1 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
+brne  :   0 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
 brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   0 cbr   :   0 
-clc   :   0 clh   :   0 cli   :   2 cln   :   0 clr   :   0 cls   :   0 
+clc   :   0 clh   :   0 cli   :   1 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
-cpi   :  18 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   8 inc   :   0 jmp   :  25 
-ld    :   1 ldd   :   0 ldi   :  89 lds   :   0 lpm   :   0 lsl   :   1 
-lsr   :   0 mov   :   2 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   1 or    :   0 ori   :   0 out   :  13 pop   :   1 
-push  :   5 rcall :   0 ret   :   0 reti  :   1 rjmp  :   7 rol   :   0 
+cpi   :   0 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   4 inc   :   0 jmp   :   4 
+ld    :   1 ldd   :   0 ldi   :  27 lds   :   0 lpm   :   0 lsl   :   0 
+lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
+neg   :   0 nop   :   1 or    :   0 ori   :   1 out   :   9 pop   :   1 
+push  :   2 rcall :   0 ret   :   0 reti  :   1 rjmp  :   1 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 
 sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
-sez   :   0 sleep :   0 spm   :   0 st    :  22 std   :   0 sts   :   0 
+sez   :   0 sleep :   0 spm   :   0 st    :   7 std   :   0 sts   :   0 
 sub   :   0 subi  :   0 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 18 out of 113 (15.9%)
+Instructions used: 15 out of 113 (13.3%)
 
 "ATmega168" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x000224    480      0    480   16384   2.9%
+[.cseg] 0x000000 0x0000c4    132      0    132   16384   0.8%
 [.dseg] 0x000100 0x000101      0      1      1    1024   0.1%
 [.eseg] 0x000000 0x000000      0      0      0     512   0.0%
 
